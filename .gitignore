@@ -1,1 +1,2 @@
-
+.env*
+/mh-agent-demo/.env

@@ -1,0 +1,20 @@
+{
+  "message": "Your temperature shows a slight dip and normal sleep patterns. Let's track these changes to understand your cycle better.",
+  "plan": {
+    "track": [
+      "Continue temperature readings",
+      "Monitor sleep quality"
+    ],
+    "actions": [
+      "Stay hydrated",
+      "Maintain sleep schedule"
+    ],
+    "escalation": false
+  },
+  "plan_version": "1.0",
+  "next_questions": [
+    "Have you noticed any changes in energy levels?",
+    "Are you tracking mood changes?"
+  ],
+  "rationale": "Temperature dip (-0.1) within normal range, sleep adequate at 7.5hrs, no bleeding or elevated HR. Basic tracking plan appropriate without escalation indicators."
+}

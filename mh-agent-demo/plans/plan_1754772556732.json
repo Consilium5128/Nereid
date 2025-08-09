@@ -1,0 +1,20 @@
+{
+  "message": "Noting elevated temperature, reduced sleep, and bleeding. Let's focus on rest and monitoring key signs.",
+  "plan": {
+    "priority_actions": [
+      "Rest 7-8 hours tonight",
+      "Monitor temperature every 4 hours",
+      "Stay hydrated (2L water daily)",
+      "Log any additional symptoms"
+    ],
+    "escalation": true,
+    "escalation_note": "Combined elevated temp, HR and bleeding warrant medical review"
+  },
+  "plan_version": "1.0",
+  "next_questions": [
+    "Any fever symptoms?",
+    "Pain level 1-10?",
+    "When did bleeding start?"
+  ],
+  "rationale": "Multiple concerning indicators present. Conservative approach with rest, monitoring and professional assessment recommended."
+}

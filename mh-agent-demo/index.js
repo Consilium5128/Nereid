@@ -4,7 +4,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const { computeFeatures } = require('./agents/saa');
-const { generatePlanAndMessage } = require('./agents/dpga');
+const { generatePlanAndMessage } = require('./agents/dpga_mock');
 const { schedulePlan } = require('./services/planner');
 
 const app = express();

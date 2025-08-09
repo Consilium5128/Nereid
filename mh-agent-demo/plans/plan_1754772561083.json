@@ -1,0 +1,19 @@
+{
+  "message": "Noted bleeding. Let's track key patterns and ensure comfort. Stay hydrated and monitor any unusual changes.",
+  "plan": {
+    "today": [
+      "Drink 8-10 glasses of water",
+      "Rest as needed",
+      "Track flow intensity",
+      "Note any severe pain"
+    ],
+    "escalation": false
+  },
+  "plan_version": "1.0",
+  "next_questions": [
+    "Is this your typical flow intensity?",
+    "Any unusual pain or discomfort?",
+    "When did bleeding start?"
+  ],
+  "rationale": "Basic menstrual care plan provided based on bleeding flag. Temperature and sleep appear normal. Additional context needed for personalization."
+}

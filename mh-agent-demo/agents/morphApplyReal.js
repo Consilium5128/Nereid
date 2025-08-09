@@ -1,17 +1,27 @@
-// agents/morphApplyReal.js
-import fetch from 'node-fetch';
-const MORPH_KEY = process.env.MORPH_API_KEY;
-const MORPH_APPLY_ENDPOINT = process.env.MORPH_ENDPOINT || 'https://api.morphllm.com/v1/apply';
+// agents/morphApplyReal.js (CommonJS)
+const fetchFn = (typeof globalThis.fetch === 'function') ? globalThis.fetch : (function () {
+  try {
+    return require('undici').fetch;
+  } catch (e) {
+    throw new Error('No fetch available. Use Node >=18 or install undici: npm install undici');
+  }
+})();
 
-export async function morphApply(originalFileContent, editSnippet, instruction, model='morph-v3') {
+const MORPH_KEY = process.env.MORPH_API_KEY;
+const MORPH_ENDPOINT = process.env.MORPH_ENDPOINT || 'https://api.morphllm.com/v1/apply';
+const MORPH_MODEL = process.env.MORPH_MODEL || 'morph-v3';
+
+async function morphApply(originalFileContent, editSnippet, instruction, model = MORPH_MODEL) {
   if (!MORPH_KEY) throw new Error('Missing MORPH_API_KEY in env');
+
   const payload = {
-    model, // pick the Apply model name from your Morph account/docs (e.g., morph-v3)
+    model,
     file: originalFileContent,
     update: editSnippet,
     instruction
   };
-  const r = await fetch(MORPH_APPLY_ENDPOINT, {
+
+  const res = await fetchFn(MORPH_ENDPOINT, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${MORPH_KEY}`,
@@ -19,11 +29,14 @@ export async function morphApply(originalFileContent, editSnippet, instruction, 
     },
     body: JSON.stringify(payload)
   });
-  if (!r.ok) {
-    const txt = await r.text();
-    throw new Error(`Morph Apply error: ${r.status} ${txt}`);
+
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`Morph Apply error ${res.status}: ${txt}`);
   }
-  const j = await r.json();
-  // j.merged_file or j.output: check the returned shape; log it first
+
+  const j = await res.json();
   return j;
 }
+
+module.exports = { morphApply };

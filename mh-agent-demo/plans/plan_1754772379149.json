@@ -1,0 +1,20 @@
+{
+  "message": "Your temperature shows normal range. Sleep is adequate. Heart rate normal. No current bleeding noted.",
+  "plan": {
+    "track": [
+      "Continue daily temperature readings",
+      "Log sleep patterns"
+    ],
+    "maintain": [
+      "Keep 7-8 hours sleep routine",
+      "Stay hydrated"
+    ],
+    "escalation": false
+  },
+  "plan_version": "1.0",
+  "next_questions": [
+    "When was your last period?",
+    "Do you track cycle length?"
+  ],
+  "rationale": "Basic vitals within normal ranges. Need cycle history for better tracking. Current data suggests stable health markers."
+}
