@@ -1,0 +1,14 @@
+{
+    "name": "mh-agent-demo",
+    "version": "0.1.0",
+    "type": "commonjs",
+    "scripts": {
+      "start": "node index.js",
+      "demo": "node run_demo.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "dotenv": "^16.0.3",
+      "uuid": "^9.0.0"
+    }
+  }

@@ -1,0 +1,12 @@
+{
+    "user_id": "user-1",
+    "day": "2025-07-28",
+    "signals": [
+      {"source":"temp","payload":{"celsius":36.5},"ts":"2025-07-28T07:00:00Z"},
+      {"source":"heart_rate","payload":{"bpm":68},"ts":"2025-07-28T07:05:00Z"},
+      {"source":"sleep","payload":{"hours":7.5},"ts":"2025-07-28T07:10:00Z"},
+      {"source":"steps","payload":{"count":6000},"ts":"2025-07-28T20:00:00Z"},
+      {"source":"screen_time","payload":{"minutes":180},"ts":"2025-07-28T23:00:00Z"},
+      {"source":"manual_text","payload":{"text":"normal light spotting last week"}, "ts":"2025-07-28T10:00:00Z"}
+    ]
+  }

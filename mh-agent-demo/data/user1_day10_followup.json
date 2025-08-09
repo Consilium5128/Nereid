@@ -1,0 +1,12 @@
+{
+    "user_id": "user-1",
+    "day": "2025-08-07",
+    "signals": [
+      {"source":"temp","payload":{"celsius":36.6},"ts":"2025-08-07T07:00:00Z"},
+      {"source":"heart_rate","payload":{"bpm":72},"ts":"2025-08-07T07:05:00Z"},
+      {"source":"sleep","payload":{"hours":7.0},"ts":"2025-08-07T07:10:00Z"},
+      {"source":"steps","payload":{"count":4800},"ts":"2025-08-07T20:00:00Z"},
+      {"source":"screen_time","payload":{"minutes":220},"ts":"2025-08-07T23:00:00Z"},
+      {"source":"manual_text","payload":{"text":"cramps reduced but still heavy flow"}, "ts":"2025-08-07T09:00:00Z"}
+    ]
+  }
