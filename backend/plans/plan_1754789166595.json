@@ -1,0 +1,74 @@
+{
+  "message": "You're in your menstrual phase (day 3). Your body needs extra care and rest during this time. Your stress levels are elevated. Consider additional self-care measures. We've detected some unusual patterns that need attention.",
+  "plan": {
+    "track": [
+      "Monitor flow intensity and color",
+      "Track pain levels and location",
+      "Record sleep quality and duration",
+      "Note mood changes and energy levels",
+      "Monitor mood changes throughout the day"
+    ],
+    "maintain": [
+      "Stay hydrated (2.5L water daily)",
+      "Consider iron-rich foods",
+      "Take regular screen breaks (20-20-20 rule)",
+      "Practice gentle stretching or yoga",
+      "Practice deep breathing exercises",
+      "Limit caffeine intake"
+    ],
+    "treat": [
+      "Use heating pad for cramps",
+      "Consider magnesium supplements",
+      "Take warm baths for relaxation",
+      "Schedule a check-in with your healthcare provider",
+      "Consider talking to a mental health professional"
+    ],
+    "escalate": true
+  },
+  "plan_version": "2.0",
+  "next_questions": [
+    "How heavy is your flow today?",
+    "Are you experiencing any unusual pain?",
+    "How is your energy level compared to usual?",
+    "What's causing your stress today?",
+    "Have you tried any relaxation techniques?"
+  ],
+  "rationale": "Based on your current cycle phase (menstrual) and health state (stressed), your body is shedding the uterine lining and needs extra care. Stress can impact hormone balance and cycle regularity. Unusual patterns detected require closer monitoring. These recommendations are tailored to support your current phase and health state.",
+  "ui_adaptation": {
+    "theme": "calm",
+    "layout": "standard",
+    "notifications": "reduced"
+  },
+  "cycle_context": {
+    "phase": "menstrual",
+    "day": 3,
+    "next_period_prediction": null,
+    "fertility_window": null,
+    "optimal_activity_level": "low"
+  },
+  "health_insights": [
+    {
+      "type": "cycle_health",
+      "title": "Menstrual Phase Support",
+      "description": "Your body needs extra nutrients and rest during menstruation",
+      "actionable": true,
+      "priority": "high"
+    },
+    {
+      "type": "lifestyle",
+      "title": "Stress Management",
+      "description": "Elevated stress can impact cycle regularity and symptoms",
+      "actionable": true,
+      "priority": "medium"
+    },
+    {
+      "type": "health_monitoring",
+      "title": "Pattern Detection",
+      "description": "Unusual patterns detected - continue monitoring closely",
+      "actionable": true,
+      "priority": "high"
+    }
+  ],
+  "timestamp": "2025-08-10T01:26:06.578Z",
+  "user_id": "P900"
+}

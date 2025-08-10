@@ -1,0 +1,41 @@
+{
+  "message": "You're in your luteal phase (day 20). Focus on self-care and preparation.",
+  "plan": {
+    "track": [
+      "Monitor mood changes",
+      "Track food cravings",
+      "Record sleep patterns",
+      "Note any premenstrual symptoms"
+    ],
+    "maintain": [
+      "Practice stress-reduction techniques",
+      "Maintain regular sleep schedule",
+      "Focus on complex carbohydrates",
+      "Engage in moderate exercise"
+    ],
+    "treat": [
+      "Consider B6 supplements",
+      "Practice mindfulness or meditation",
+      "Use calming essential oils"
+    ],
+    "escalate": false
+  },
+  "plan_version": "2.0",
+  "next_questions": [],
+  "rationale": "Based on your current cycle phase (luteal) and health state (normal), your body is preparing for potential pregnancy or menstruation. These recommendations are tailored to support your current phase and health state.",
+  "ui_adaptation": {
+    "theme": "default",
+    "layout": "standard",
+    "notifications": "normal"
+  },
+  "cycle_context": {
+    "phase": "luteal",
+    "day": 20,
+    "next_period_prediction": null,
+    "fertility_window": null,
+    "optimal_activity_level": "moderate"
+  },
+  "health_insights": [],
+  "timestamp": "2025-08-10T01:26:06.578Z",
+  "user_id": "P902"
+}

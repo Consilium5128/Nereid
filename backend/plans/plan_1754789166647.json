@@ -1,0 +1,43 @@
+{
+  "message": "You're in your ovulatory phase (day 16). Peak energy and fertility window. You have high energy levels. Great time to tackle challenging tasks.",
+  "plan": {
+    "track": [
+      "Monitor cervical mucus changes",
+      "Track libido and energy levels",
+      "Record social interactions",
+      "Note any ovulation pain"
+    ],
+    "maintain": [
+      "Engage in high-intensity workouts",
+      "Focus on social activities",
+      "Maintain balanced nutrition",
+      "Practice stress management",
+      "Channel energy into productive activities",
+      "Engage in social activities"
+    ],
+    "treat": [],
+    "escalate": false
+  },
+  "plan_version": "2.0",
+  "next_questions": [
+    "Have you noticed any changes in cervical mucus?",
+    "How is your energy level today?",
+    "Are you experiencing any ovulation pain?"
+  ],
+  "rationale": "Based on your current cycle phase (ovulatory) and health state (energetic), you're at peak fertility and energy levels. These recommendations are tailored to support your current phase and health state.",
+  "ui_adaptation": {
+    "theme": "vibrant",
+    "layout": "standard",
+    "notifications": "normal"
+  },
+  "cycle_context": {
+    "phase": "ovulatory",
+    "day": 16,
+    "next_period_prediction": null,
+    "fertility_window": true,
+    "optimal_activity_level": "very_high"
+  },
+  "health_insights": [],
+  "timestamp": "2025-08-10T01:26:06.578Z",
+  "user_id": "P900"
+}

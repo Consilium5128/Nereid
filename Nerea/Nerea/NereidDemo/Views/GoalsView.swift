@@ -113,12 +113,13 @@ struct IconGoalCard: View {
     }
 
     private var progress: Double {
+        // Calculate progress based on current vs target
         switch goal.target {
-        case .value(let v):
-            return min(1, goal.current / max(1, v))
-        case .range(let r):
-            let mid = max(1, (r.lowerBound + r.upperBound) / 2)
-            return min(1, goal.current / mid)
+        case .value(let target):
+            return min(goal.current / target, 1.0)
+        case .range(let range):
+            let normalized = (goal.current - range.lowerBound) / (range.upperBound - range.lowerBound)
+            return max(0, min(normalized, 1.0))
         }
     }
 
@@ -163,13 +164,8 @@ struct IconGoalCard: View {
     }
 
     private var progressSubtitle: String {
-        switch goal.target {
-        case .value(let v):
-            return "\(Int(goal.current))/\(Int(v)) \(goal.unit)"
-        case .range(let r):
-            let mid = Int((r.lowerBound + r.upperBound)/2)
-            return "\(Int(goal.current))/\(mid) \(goal.unit)"
-        }
+        let progressPercent = Int(progress * 100)
+        return "\(progressPercent)%"
     }
 }
 

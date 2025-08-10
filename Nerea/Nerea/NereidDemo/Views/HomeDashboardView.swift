@@ -65,10 +65,10 @@ struct HomeDashboardView: View {
                         // Collapsible: Today quick log
                         CollapsibleCard(title: "Tell me more about your day") {
                             VStack(alignment: .leading, spacing: 12) {
-                                MoodPicker { app.saveLog(.mood($0), for: Date()) }
-                                FlowPicker { app.saveLog(.flow($0), for: Date()) }
-                                PainPicker { app.saveLog(.pain($0), for: Date()) }
-                                NutritionPicker { app.saveLog(.nutrition($0), for: Date()) }
+                                MoodPicker { app.saveLog(.mood($0.rawValue), for: Date()) }
+                                FlowPicker { app.saveLog(.flow($0.rawValue), for: Date()) }
+                                PainPicker { app.saveLog(.pain($0.rawValue), for: Date()) }
+                                NutritionPicker { app.saveLog(.nutrition($0.rawValue), for: Date()) }
                             }
                         }
 

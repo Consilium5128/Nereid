@@ -139,8 +139,11 @@ class NetworkService: ObservableObject {
         let response = try JSONDecoder().decode(CyclePredictionsResponse.self, from: data)
         
         // Convert predictions to Predictions format
+        let formatter = ISO8601DateFormatter()
+        let nextPeriodStart = formatter.date(from: response.predictions.first?.startDate ?? "") ?? Date()
+        
         return Predictions(
-            nextPeriod: response.predictions.first?.startDate ?? "",
+            nextPeriodStart: nextPeriodStart,
             cycleLength: response.predictions.first?.length ?? 28,
             confidence: response.predictions.first?.confidence ?? 0.75,
             phases: response.predictions.first?.phases.map { phase in
@@ -379,7 +382,9 @@ struct PhaseData: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(count, forKey: .count)
-        try container.encode(averageSymptoms, forKey: .averageSymptoms)
+        // Encode averageSymptoms as JSON data
+        let symptomsData = try JSONSerialization.data(withJSONObject: averageSymptoms)
+        try container.encode(symptomsData, forKey: .averageSymptoms)
     }
 }
 
@@ -478,66 +483,7 @@ struct PhasePrediction: Codable {
     let duration: Int
 }
 
-struct HealthInsights: Codable {
-    let userId: String
-    let timestamp: String
-    let cycleInsights: [CycleInsight]
-    let healthInsights: [HealthInsight]
-    let lifestyleInsights: [LifestyleInsight]
-    let riskFactors: [RiskFactor]
-    let goals: [HealthGoal]
-    let notifications: [Notification]
-}
 
-struct CycleInsight: Codable {
-    let type: String
-    let title: String
-    let message: String
-    let priority: String
-}
-
-struct HealthInsight: Codable {
-    let category: String
-    let title: String
-    let description: String
-    let actionable: Bool
-    let priority: String
-}
-
-struct LifestyleInsight: Codable {
-    let category: String
-    let title: String
-    let description: String
-    let actionable: Bool
-    let priority: String
-}
-
-struct RiskFactor: Codable {
-    let condition: String
-    let riskLevel: String
-    let factors: [String]
-    let recommendations: [String]
-}
-
-struct HealthGoal: Codable {
-    let category: String
-    let title: String
-    let target: String
-    let current: String
-    let timeframe: String
-    let actionable: Bool
-    let progress: Int?
-    let status: String?
-}
-
-struct Notification: Codable {
-    let id: String
-    let title: String
-    let body: String
-    let scheduledTime: String
-    let repeat: String
-    let category: String
-}
 
 struct UIAdaptationResult: Codable {
     let userId: String

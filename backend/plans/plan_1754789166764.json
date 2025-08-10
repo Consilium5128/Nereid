@@ -1,0 +1,37 @@
+{
+  "message": "You're in your follicular phase (day 11). This is a great time for building strength and energy.",
+  "plan": {
+    "track": [
+      "Monitor energy levels throughout the day",
+      "Track workout performance",
+      "Record mood and motivation",
+      "Note appetite changes"
+    ],
+    "maintain": [
+      "Maintain regular exercise routine",
+      "Focus on protein-rich nutrition",
+      "Stay consistent with sleep schedule",
+      "Engage in creative activities"
+    ],
+    "treat": [],
+    "escalate": false
+  },
+  "plan_version": "2.0",
+  "next_questions": [],
+  "rationale": "Based on your current cycle phase (follicular) and health state (normal), your body is preparing for ovulation and building energy. These recommendations are tailored to support your current phase and health state.",
+  "ui_adaptation": {
+    "theme": "default",
+    "layout": "standard",
+    "notifications": "normal"
+  },
+  "cycle_context": {
+    "phase": "follicular",
+    "day": 11,
+    "next_period_prediction": null,
+    "fertility_window": null,
+    "optimal_activity_level": "high"
+  },
+  "health_insights": [],
+  "timestamp": "2025-08-10T01:26:06.578Z",
+  "user_id": "P902"
+}

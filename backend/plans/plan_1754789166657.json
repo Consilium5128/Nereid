@@ -1,0 +1,55 @@
+{
+  "message": "You're in your luteal phase (day 20). Focus on self-care and preparation. You're experiencing fatigue. Prioritize rest and recovery. We've detected some unusual patterns that need attention.",
+  "plan": {
+    "track": [
+      "Monitor mood changes",
+      "Track food cravings",
+      "Record sleep patterns",
+      "Note any premenstrual symptoms",
+      "Track sleep quality more closely"
+    ],
+    "maintain": [
+      "Practice stress-reduction techniques",
+      "Maintain regular sleep schedule",
+      "Focus on complex carbohydrates",
+      "Engage in moderate exercise",
+      "Take short naps if needed",
+      "Reduce screen time before bed"
+    ],
+    "treat": [
+      "Consider B6 supplements",
+      "Practice mindfulness or meditation",
+      "Use calming essential oils",
+      "Consider vitamin D supplements",
+      "Schedule a check-in with your healthcare provider",
+      "Practice sleep hygiene techniques"
+    ],
+    "escalate": true
+  },
+  "plan_version": "2.0",
+  "next_questions": [],
+  "rationale": "Based on your current cycle phase (luteal) and health state (fatigued), your body is preparing for potential pregnancy or menstruation. Fatigue may indicate need for additional rest and nutrition. Unusual patterns detected require closer monitoring. These recommendations are tailored to support your current phase and health state.",
+  "ui_adaptation": {
+    "theme": "gentle",
+    "layout": "standard",
+    "notifications": "normal"
+  },
+  "cycle_context": {
+    "phase": "luteal",
+    "day": 20,
+    "next_period_prediction": null,
+    "fertility_window": null,
+    "optimal_activity_level": "moderate"
+  },
+  "health_insights": [
+    {
+      "type": "health_monitoring",
+      "title": "Pattern Detection",
+      "description": "Unusual patterns detected - continue monitoring closely",
+      "actionable": true,
+      "priority": "high"
+    }
+  ],
+  "timestamp": "2025-08-10T01:26:06.578Z",
+  "user_id": "P900"
+}

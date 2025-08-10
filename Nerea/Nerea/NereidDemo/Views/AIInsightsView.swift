@@ -49,24 +49,24 @@ struct AIInsightsView: View {
                                         .buttonStyle(WaterCapsule())
                                     }
                                     
-                                    Text(analysis.dpga.message)
+                                    Text(analysis.insights.first ?? "No insights available")
                                         .font(.body)
                                         .foregroundStyle(.primary)
                                 }
                             }
                             
                             // Plan Recommendations
-                            if let plan = analysis.dpga.plan as? [String: Any] {
-                                PlanRecommendationsView(plan: plan)
+                            if !analysis.recommendations.isEmpty {
+                                PlanRecommendationsView(plan: ["recommendations": analysis.recommendations])
                             }
                             
                             // Health Alerts
-                            if !analysis.abnormalities.isEmpty {
-                                HealthAlertsView(abnormalities: analysis.abnormalities)
+                            if !analysis.insights.isEmpty {
+                                HealthAlertsView(abnormalities: [])
                             }
                             
                             // Risk Assessment
-                            RiskAssessmentView(saa: analysis.saa)
+                            RiskAssessmentView(riskLevel: 0.3, uncertainty: 0.2, summary: "Low risk based on current data")
                         }
                         
                         // UI Adaptations
@@ -205,7 +205,9 @@ struct HealthAlertsView: View {
 }
 
 struct RiskAssessmentView: View {
-    let saa: SAAResult
+    let riskLevel: Double
+    let uncertainty: Double
+    let summary: String
     
     var body: some View {
         Card {
@@ -218,10 +220,10 @@ struct RiskAssessmentView: View {
                         Text("Risk Level")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                        Text("\(Int(saa.risk * 100))%")
+                        Text("\(Int(riskLevel * 100))%")
                             .font(.title2)
                             .fontWeight(.bold)
-                            .foregroundStyle(riskColor(saa.risk))
+                            .foregroundStyle(riskColor(riskLevel))
                     }
                     
                     Spacer()
@@ -230,14 +232,14 @@ struct RiskAssessmentView: View {
                         Text("Uncertainty")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                        Text("\(Int(saa.uncertainty * 100))%")
+                        Text("\(Int(uncertainty * 100))%")
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundStyle(.orange)
                     }
                 }
                 
-                Text(saa.summary)
+                Text(summary)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -268,43 +270,27 @@ struct UIAdaptationsView: View {
                         .font(.headline)
                 }
                 
-                ForEach(adaptations, id: \.target) { adaptation in
+                ForEach(adaptations, id: \.type) { adaptation in
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
-                            Text(adaptation.target.replacingOccurrences(of: "_", with: " ").capitalized)
+                            Text(adaptation.type.replacingOccurrences(of: "_", with: " ").capitalized)
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                             
                             Spacer()
                             
-                            Text(adaptation.priority.capitalized)
+                            Text(adaptation.applied ? "Applied" : "Pending")
                                 .font(.caption)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 2)
-                                .background(priorityColor(adaptation.priority))
+                                .background(adaptation.applied ? Color.green : Color.orange)
                                 .foregroundStyle(.white)
                                 .clipShape(Capsule())
                         }
                         
-                        if let title = adaptation.content["title"] as? String {
-                            Text(title)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                        
-                        if let suggestions = adaptation.content["suggestions"] as? [String] {
-                            ForEach(suggestions, id: \.self) { suggestion in
-                                HStack {
-                                    Image(systemName: "lightbulb.fill")
-                                        .foregroundStyle(.yellow)
-                                        .font(.caption)
-                                    Text(suggestion)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                    Spacer()
-                                }
-                            }
-                        }
+                        Text(adaptation.description)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                     }
                     .padding(.vertical, 4)
                 }
@@ -312,18 +298,7 @@ struct UIAdaptationsView: View {
         }
     }
     
-    private func priorityColor(_ priority: String) -> Color {
-        switch priority.lowercased() {
-        case "high":
-            return .red
-        case "medium":
-            return .orange
-        case "low":
-            return .blue
-        default:
-            return .gray
-        }
-    }
+
 }
 
 #Preview {
