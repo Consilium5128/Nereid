@@ -1,0 +1,227 @@
+{
+  "userId": "P900",
+  "week": 3,
+  "timestamp": "2025-08-10T00:10:08.836Z",
+  "profile": {
+    "userId": "P900",
+    "age": 28,
+    "conditions": {
+      "pcos": false,
+      "endometriosis": false,
+      "irregularPeriods": false,
+      "weightGain": false,
+      "insulinResistance": false,
+      "ovarianCysts": false,
+      "hairThinning": false,
+      "heavyBleeding": false,
+      "infertility": false,
+      "giIssues": false
+    },
+    "preferences": {
+      "journalingMode": "audio",
+      "goalFocus": "performance",
+      "coachingStyle": "motivational"
+    },
+    "cyclePattern": {
+      "averageCycleLength": 28,
+      "averageFlowDuration": 5,
+      "regularity": "very_regular",
+      "phases": {
+        "menstrual": {
+          "count": 5,
+          "averageSymptoms": {}
+        },
+        "follicular": {
+          "count": 8,
+          "averageSymptoms": {}
+        },
+        "ovulatory": {
+          "count": 2,
+          "averageSymptoms": {}
+        },
+        "luteal": {
+          "count": 5,
+          "averageSymptoms": {}
+        }
+      }
+    },
+    "healthMetrics": {
+      "hrv": {
+        "average": 66,
+        "trend": "stable",
+        "optimalRange": [
+          60,
+          100
+        ]
+      },
+      "sleep": {
+        "averageHours": 7.4,
+        "deepSleepPercentage": 35,
+        "quality": "good"
+      },
+      "bbt": {
+        "average": 36.6,
+        "follicular": 0,
+        "luteal": 0
+      },
+      "activity": {
+        "averageSteps": 13565,
+        "averageActiveMinutes": 103
+      },
+      "symptoms": {
+        "cramps": {
+          "average": 0.8,
+          "severity": "none"
+        },
+        "bodyPain": {
+          "average": 1,
+          "severity": "none"
+        },
+        "backPain": {
+          "average": 0.8,
+          "severity": "none"
+        },
+        "mood": {
+          "average": 4.4,
+          "trend": "stable"
+        }
+      }
+    },
+    "lifestyleFactors": {
+      "caffeine": {
+        "average": 1.2,
+        "impact": "moderate"
+      },
+      "stress": {
+        "averageBusyScore": 4,
+        "meetingsPerDay": 2.3,
+        "stressLevel": "moderate"
+      },
+      "environment": {
+        "averageLightMinutes": 79,
+        "sunnyDays": 13,
+        "averageUVIndex": 6.2,
+        "averageTemperature": 22.2,
+        "averageAQI": 61,
+        "averagePollenCount": 39
+      },
+      "travel": {
+        "flightDays": 0,
+        "averageJetLag": 0
+      }
+    }
+  },
+  "insights": {
+    "userId": "P900",
+    "timestamp": "2025-08-10T00:10:08.833Z",
+    "cycleInsights": [],
+    "healthInsights": [],
+    "lifestyleInsights": [],
+    "riskFactors": [],
+    "goals": [
+      {
+        "category": "sleep",
+        "title": "Improve Sleep Duration",
+        "target": "8 hours per night",
+        "current": "8.0 hours",
+        "timeframe": "30 days",
+        "actionable": true,
+        "progress": 75,
+        "status": "in_progress"
+      }
+    ],
+    "notifications": [
+      {
+        "type": "cycle_tracking",
+        "title": "Track Your Cycle",
+        "message": "Log your symptoms and observations for better predictions",
+        "frequency": "weekly",
+        "time": "20:00",
+        "enabled": true,
+        "body": "Great progress! Keep up the excellent work with your health goals."
+      },
+      {
+        "type": "health_checkin",
+        "title": "Health Check-in",
+        "message": "How are you feeling today?",
+        "frequency": "weekly",
+        "time": "09:00",
+        "enabled": true,
+        "body": "Great progress! Keep up the excellent work with your health goals."
+      }
+    ]
+  },
+  "uiAdaptations": {
+    "userId": "P900",
+    "timestamp": "2025-08-10T00:10:08.836Z",
+    "adaptations": [
+      {
+        "file": "AIInsightsView.swift",
+        "changes": [],
+        "success": true
+      },
+      {
+        "file": "Components.swift",
+        "changes": [],
+        "success": true
+      },
+      {
+        "file": "GoalsView.swift",
+        "changes": [],
+        "success": true
+      },
+      {
+        "file": "HomeDashboardView.swift",
+        "changes": [],
+        "success": true
+      },
+      {
+        "file": "MainTabView.swift",
+        "changes": [],
+        "success": true
+      },
+      {
+        "file": "OnboardingView.swift",
+        "changes": [],
+        "success": true
+      },
+      {
+        "file": "PredictionsView.swift",
+        "changes": [],
+        "success": true
+      }
+    ]
+  },
+  "notifications": [],
+  "progress": {
+    "goals": [
+      {
+        "title": "Track cycle daily",
+        "completed": 21,
+        "total": 21,
+        "status": "completed"
+      },
+      {
+        "title": "Improve sleep",
+        "completed": 18,
+        "total": 21,
+        "status": "completed"
+      },
+      {
+        "title": "Reduce stress",
+        "completed": 15,
+        "total": 21,
+        "status": "in_progress"
+      }
+    ],
+    "metrics": {},
+    "improvements": [
+      "Predictable cycle patterns",
+      "Consistent sleep schedule",
+      "Effective stress management"
+    ],
+    "challenges": [
+      "Long-term habit formation"
+    ]
+  }
+}

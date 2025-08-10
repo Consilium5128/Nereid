@@ -1,170 +1,295 @@
 // agents/dpga.js
-// Minimal DPGA implementation that always exports generatePlanAndMessage.
-// Uses the mock LLM by default for local demos.
-
-const path = require('path');
 const fs = require('fs');
-
-// Try to use a real Claude wrapper if present, otherwise fallback to mock
-let callClaudeForPlan = null;
-try {
-  callClaudeForPlan = require('./claudeDPGA').callClaudeForPlan;
-} catch (e) {
-  callClaudeForPlan = null;
-}
-
-let morphApply = null;
-try {
-  morphApply = require('./morphApplyReal').morphApply;
-} catch (e) {
-  morphApply = null;
-}
-
-// Fallback mock generator from utils/mockLLM.js
+const path = require('path');
 const { generateMockDPGA } = require('../utils/mockLLM');
+const { applyMockEdit } = require('./morphApply');
+const { pool } = require('../config/database');
+const { publishMessage } = require('../config/redis');
 
-const promptCache = new Map();
+const USE_MOCK = (process.env.MOCK === 'true' || !process.env.CLAUDE_API_KEY);
 
-/* load prompt into cache (if exists) */
-function loadPromptToCache(promptName = 'dpga_system') {
-  const p = path.join(__dirname, '..', 'prompts', promptName + '.json');
-  if (fs.existsSync(p)) {
+class DynamicPromptGeneratorAgent {
+  constructor() {
+    this.promptTemplates = new Map();
+    this.userPreferences = new Map();
+  }
+
+  async loadPromptTemplate(templateName = 'dpga_system') {
+    if (this.promptTemplates.has(templateName)) {
+      return this.promptTemplates.get(templateName);
+    }
+
+    const p = path.join(__dirname, '..', 'prompts', `${templateName}.json`);
     const raw = fs.readFileSync(p, 'utf8');
-    try {
-      const json = JSON.parse(raw);
-      promptCache.set(promptName, json.content);
-      return json.content;
-    } catch (e) {
-      // fall through
-      promptCache.set(promptName, raw);
-      return raw;
-    }
-  } else {
-    // no prompt file — set a simple default template
-    const defaultTemplate = 'SYSTEM: DPGA template. Replace <<USER_PROFILE>> and <<FEATURES>>.';
-    promptCache.set(promptName, defaultTemplate);
-    return defaultTemplate;
-  }
-}
-
-/* safe JSON extraction helper */
-function extractJsonBlock(text) {
-  if (!text || typeof text !== 'string') return null;
-  const start = text.indexOf('{');
-  if (start === -1) return null;
-  let depth = 0;
-  for (let i = start; i < text.length; i++) {
-    const ch = text[i];
-    if (ch === '{') depth++;
-    else if (ch === '}') depth--;
-    if (depth === 0) return text.slice(start, i + 1);
-  }
-  return null;
-}
-
-/* persist plan to disk for debugging */
-function persistPlanDump(obj) {
-  const outdir = path.join(__dirname, '..', 'plans');
-  if (!fs.existsSync(outdir)) fs.mkdirSync(outdir, { recursive: true });
-  const fname = `plan_${Date.now()}.json`;
-  fs.writeFileSync(path.join(outdir, fname), JSON.stringify(obj, null, 2));
-}
-
-/* Main exported function */
-async function generatePlanAndMessage(userProfile = {}, features = {}) {
-  // Ensure dpga_system prompt loaded
-  if (!promptCache.has('dpga_system')) loadPromptToCache('dpga_system');
-
-  // Construct minimal filled prompt (for real Claude path)
-  const template = promptCache.get('dpga_system');
-  const filledPrompt = template
-    .replace('<<USER_PROFILE>>', JSON.stringify({ id: userProfile.id, age: userProfile.age, job: userProfile.job }))
-    .replace('<<FEATURES>>', JSON.stringify(features));
-
-  // Use mock if no real Claude wrapper present or MOCK=true
-  const useMock = (process.env.MOCK === 'true' || !callClaudeForPlan);
-  if (useMock) {
-    // returns an object with {message, plan, plan_version, next_questions, ...}
-    const out = generateMockDPGA(userProfile, features);
-    persistPlanDump(out);
-    return out;
+    const template = JSON.parse(raw).content;
+    this.promptTemplates.set(templateName, template);
+    return template;
   }
 
-  // Real Claude flow (if callClaudeForPlan exists)
-  try {
-    const claudeResp = await callClaudeForPlan(filledPrompt, 800);
-    // try to extract the textual output from different shapes
-    let textOut = null;
-    if (typeof claudeResp === 'string') textOut = claudeResp;
-    else if (claudeResp.completion) textOut = claudeResp.completion;
-    else if (claudeResp.output) textOut = claudeResp.output;
-    else if (claudeResp.choices && claudeResp.choices[0] && claudeResp.choices[0].text) textOut = claudeResp.choices[0].text;
-    else if (claudeResp.choices && claudeResp.choices[0] && claudeResp.choices[0].message) textOut = claudeResp.choices[0].message.content;
-    else textOut = JSON.stringify(claudeResp);
+  async callRealClaude(prompt) {
+    // Placeholder: implement real Claude API call here
+    // For now, we'll use the mock implementation
+    return generateMockDPGA({}, {});
+  }
 
-    // parse JSON output
-    let parsed = null;
-    try {
-      parsed = JSON.parse(textOut);
-    } catch (e) {
-      const block = extractJsonBlock(textOut);
-      if (!block) {
-        console.error('[DPGA] Could not parse Claude output, returning fallback plan. Raw:', textOut);
-        parsed = {
-          message: 'Sorry, I could not process this right now.',
-          plan: { plan_version: 'v0.0-fallback', nodes: [] },
-          plan_version: 'v0.0-fallback',
-          next_questions: [],
-          prompt_edit_request: null,
-          rationale: 'fallback due to parse error'
-        };
-      } else {
-        parsed = JSON.parse(block);
-      }
+  async generatePlanAndMessage(userProfile, features, abnormalities = []) {
+    const promptTemplate = await this.loadPromptTemplate();
+    
+    // Enhanced prompt with cycle phase and abnormalities
+    const enhancedFeatures = {
+      ...features,
+      abnormalities: abnormalities.map(a => a.description),
+      cycle_phase: features.cycle_phase || 'unknown',
+      day_of_cycle: features.day_of_cycle || 'unknown'
+    };
+
+    const filledPrompt = promptTemplate
+      .replace('<<USER_PROFILE>>', JSON.stringify(userProfile))
+      .replace('<<FEATURES>>', JSON.stringify(enhancedFeatures))
+      .replace('<<ABNORMALITIES>>', JSON.stringify(abnormalities));
+
+    let llmOutput;
+    if (USE_MOCK) {
+      llmOutput = generateMockDPGA(userProfile, enhancedFeatures);
+    } else {
+      llmOutput = await this.callRealClaude(filledPrompt);
     }
 
-    // If parsed contains prompt_edit_request and morphApply exists, call it
-    if (parsed && parsed.prompt_edit_request && parsed.prompt_edit_request.target && parsed.prompt_edit_request.edit_snippet) {
-      const target = parsed.prompt_edit_request.target;
-      const edit_snippet = parsed.prompt_edit_request.edit_snippet;
-      // load original
-      const pf = path.join(__dirname, '..', 'prompts', target + '.json');
-      const original = fs.existsSync(pf) ? (JSON.parse(fs.readFileSync(pf, 'utf8')).content || '') : '';
-      if (morphApply) {
-        try {
-          const morphResp = await morphApply(original, edit_snippet, `Apply DPGA edit to ${target}`);
-          // persist morphological output if present
-          const merged = morphResp.merged || morphResp.output || morphResp.updated_text || JSON.stringify(morphResp);
-          fs.writeFileSync(pf, JSON.stringify({ name: target, content: merged }, null, 2));
-          promptCache.set(target, merged);
-          parsed._morph = { ok: true };
-        } catch (merr) {
-          console.error('[DPGA] morphApply failed:', merr);
-          parsed._morph = { ok: false, err: String(merr) };
-        }
-      } else {
-        // fallback merge: append edit snippet
-        const merged = original + '\n\n// DPGA-requested-edit (mock append)\n' + edit_snippet;
-        fs.writeFileSync(pf, JSON.stringify({ name: target, content: merged }, null, 2));
-        promptCache.set(target, merged);
-        parsed._morph = { ok: 'mock-append' };
-      }
-    }
+    // Enhanced plan structure
+    const enhancedPlan = await this.enhancePlan(llmOutput, userProfile, features);
+    
+    // Check if UI adaptation is needed
+    const uiAdaptation = await this.determineUIAdaptation(features, abnormalities, userProfile);
+    
+    // Store the plan in database
+    await this.storePlan(userProfile.id, enhancedPlan, features);
 
-    persistPlanDump(parsed);
-    return parsed;
-
-  } catch (err) {
-    console.error('[DPGA] Error calling Claude path:', err);
     return {
-      message: "Error processing request.",
-      plan: { plan_version: 'v0.0-err', nodes: [] },
-      plan_version: 'v0.0-err',
-      next_questions: [],
-      prompt_edit_request: null,
-      rationale: 'error fallback'
+      ...enhancedPlan,
+      ui_adaptation: uiAdaptation,
+      timestamp: new Date().toISOString()
     };
   }
+
+  async enhancePlan(basePlan, userProfile, features) {
+    const enhancedPlan = {
+      ...basePlan,
+      plan_version: Date.now().toString(),
+      generated_at: new Date().toISOString(),
+      user_id: userProfile.id,
+      cycle_context: {
+        phase: features.cycle_phase,
+        day: features.day_of_cycle,
+        next_period_prediction: await this.predictNextPeriod(userProfile.id)
+      }
+    };
+
+    // Add cycle-specific recommendations
+    if (features.cycle_phase === 'menstrual') {
+      enhancedPlan.track = enhancedPlan.track || [];
+      enhancedPlan.track.push('Monitor flow intensity and color');
+      enhancedPlan.track.push('Track pain levels and location');
+      
+      enhancedPlan.maintain = enhancedPlan.maintain || [];
+      enhancedPlan.maintain.push('Stay hydrated (2.5L water)');
+      enhancedPlan.maintain.push('Consider iron-rich foods');
+    }
+
+    if (features.cycle_phase === 'ovulatory') {
+      enhancedPlan.track = enhancedPlan.track || [];
+      enhancedPlan.track.push('Monitor cervical mucus changes');
+      enhancedPlan.track.push('Track libido changes');
+      
+      enhancedPlan.maintain = enhancedPlan.maintain || [];
+      enhancedPlan.maintain.push('Maintain regular exercise routine');
+    }
+
+    if (features.cycle_phase === 'luteal') {
+      enhancedPlan.track = enhancedPlan.track || [];
+      enhancedPlan.track.push('Monitor mood changes');
+      enhancedPlan.track.push('Track food cravings');
+      
+      enhancedPlan.maintain = enhancedPlan.maintain || [];
+      enhancedPlan.maintain.push('Practice stress management techniques');
+    }
+
+    // Add personalized goals based on user profile
+    if (userProfile.job === 'designer') {
+      enhancedPlan.maintain = enhancedPlan.maintain || [];
+      enhancedPlan.maintain.push('Take regular screen breaks (20-20-20 rule)');
+    }
+
+    return enhancedPlan;
+  }
+
+  async determineUIAdaptation(features, abnormalities, userProfile) {
+    const adaptations = [];
+
+    // High stress adaptation
+    if (features.stress_level > 0.7) {
+      adaptations.push({
+        type: 'add_component',
+        target: 'stress_management_card',
+        priority: 'high',
+        content: {
+          title: 'Stress Management',
+          suggestions: ['Deep breathing exercises', 'Take a 5-minute walk', 'Listen to calming music']
+        }
+      });
+    }
+
+    // Sleep issues adaptation
+    if (features.sleep_hours < 6) {
+      adaptations.push({
+        type: 'modify_component',
+        target: 'sleep_tracker',
+        priority: 'medium',
+        changes: {
+          highlight: true,
+          add_reminder: 'Consider earlier bedtime tonight'
+        }
+      });
+    }
+
+    // Cycle phase adaptation
+    if (features.cycle_phase === 'menstrual') {
+      adaptations.push({
+        type: 'add_component',
+        target: 'cycle_phase_card',
+        priority: 'high',
+        content: {
+          title: 'Menstrual Phase',
+          phase: 'menstrual',
+          day: features.day_of_cycle,
+          tips: ['Rest when needed', 'Stay hydrated', 'Gentle exercise only']
+        }
+      });
+    }
+
+    // Abnormalities adaptation
+    if (abnormalities.length > 0) {
+      adaptations.push({
+        type: 'add_component',
+        target: 'health_alert',
+        priority: 'high',
+        content: {
+          title: 'Health Alert',
+          abnormalities: abnormalities,
+          action_required: abnormalities.some(a => a.severity === 'high')
+        }
+      });
+    }
+
+    return adaptations;
+  }
+
+  async predictNextPeriod(userId) {
+    try {
+      const result = await pool.query(
+        'SELECT event_date FROM cycle_events WHERE user_id = $1 AND event_type = $2 ORDER BY event_date DESC LIMIT 1',
+        [userId, 'period_start']
+      );
+      
+      if (result.rows.length === 0) return null;
+      
+      const lastPeriodDate = new Date(result.rows[0].event_date);
+      const avgCycleLength = await this.getAverageCycleLength(userId);
+      const nextPeriodDate = new Date(lastPeriodDate);
+      nextPeriodDate.setDate(nextPeriodDate.getDate() + avgCycleLength);
+      
+      return nextPeriodDate.toISOString();
+    } catch (error) {
+      console.error('Error predicting next period:', error);
+      return null;
+    }
+  }
+
+  async getAverageCycleLength(userId) {
+    try {
+      const result = await pool.query(
+        'SELECT event_date FROM cycle_events WHERE user_id = $1 AND event_type = $2 ORDER BY event_date DESC LIMIT 10',
+        [userId, 'period_start']
+      );
+      
+      if (result.rows.length < 2) return 28;
+      
+      const dates = result.rows.map(row => new Date(row.event_date)).reverse();
+      const cycles = [];
+      
+      for (let i = 1; i < dates.length; i++) {
+        const diff = Math.floor((dates[i] - dates[i-1]) / (1000 * 60 * 60 * 24));
+        cycles.push(diff);
+      }
+      
+      return Math.round(cycles.reduce((a, b) => a + b, 0) / cycles.length);
+    } catch (error) {
+      console.error('Error calculating average cycle length:', error);
+      return 28;
+    }
+  }
+
+  async storePlan(userId, plan, features) {
+    try {
+      await pool.query(
+        'INSERT INTO ai_outputs (user_id, agent_type, features, risk_score, plan, message, version) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        [
+          userId,
+          'dpga',
+          JSON.stringify(features),
+          features.risk || 0,
+          JSON.stringify(plan),
+          plan.message || '',
+          plan.plan_version || Date.now().toString()
+        ]
+      );
+    } catch (error) {
+      console.error('Error storing plan:', error);
+    }
+  }
+
+  async applyUIAdaptations(adaptations, userId) {
+    for (const adaptation of adaptations) {
+      try {
+        // Store adaptation in database
+        await pool.query(
+          'INSERT INTO ui_adaptations (user_id, adaptation_type, target_component, changes) VALUES ($1, $2, $3, $4)',
+          [userId, adaptation.type, adaptation.target, JSON.stringify(adaptation)]
+        );
+
+        // Publish to Redis for real-time UI updates
+        await publishMessage('ui_adaptations', {
+          user_id: userId,
+          adaptation: adaptation,
+          timestamp: new Date().toISOString()
+        });
+
+        // If Morph integration is enabled, apply code changes
+        if (process.env.MORPH_ENABLED === 'true') {
+          await this.applyMorphChanges(adaptation, userId);
+        }
+      } catch (error) {
+        console.error('Error applying UI adaptation:', error);
+      }
+    }
+  }
+
+  async applyMorphChanges(adaptation, userId) {
+    // This would integrate with Morph to modify SwiftUI code
+    // For now, we'll use the mock implementation
+    if (adaptation.type === 'add_component') {
+      const morphRequest = {
+        target: 'swiftui_components',
+        edit_snippet: `// Add ${adaptation.target} component for user ${userId}`
+      };
+      applyMockEdit(morphRequest.target, morphRequest.edit_snippet);
+    }
+  }
 }
 
-module.exports = { generatePlanAndMessage, promptCache, loadPromptToCache };
+// Backward compatibility
+async function generatePlanAndMessage(userProfile, features) {
+  const dpga = new DynamicPromptGeneratorAgent();
+  return dpga.generatePlanAndMessage(userProfile, features);
+}
+
+module.exports = { generatePlanAndMessage, DynamicPromptGeneratorAgent };

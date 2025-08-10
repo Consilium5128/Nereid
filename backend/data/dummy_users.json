@@ -1,0 +1,14 @@
+[
+    {
+      "id": "user-1",
+      "age": 28,
+      "job": "designer",
+      "timezone": "America/Los_Angeles",
+      "onboarding": {
+        "last_period_start": "2025-07-01",
+        "typical_cycle_length": 28,
+        "typical_period_length": 5
+      },
+      "notification_pref": "minimal"
+    }
+  ]

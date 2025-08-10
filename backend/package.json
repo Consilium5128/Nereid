@@ -1,0 +1,28 @@
+{
+    "name": "nereid-backend",
+    "version": "1.0.0",
+    "type": "commonjs",
+      "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "setup-db": "node scripts/setup-database.js",
+    "test": "node test-system.js",
+    "journey": "node scripts/run-30-day-journey.js"
+  },
+    "dependencies": {
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "cors": "^2.8.5",
+        "helmet": "^7.1.0",
+        "compression": "^1.7.4",
+        "morgan": "^1.10.0",
+        "sqlite3": "^5.1.6",
+        "node-cron": "^3.0.3",
+        "axios": "^1.6.2",
+        "joi": "^17.11.0",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.2"
+    }
+}

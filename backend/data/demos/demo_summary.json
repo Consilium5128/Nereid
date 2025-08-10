@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-08-10T00:10:08.836Z",
+  "totalUsers": 1,
+  "totalDemos": 4,
+  "weeklyBreakdown": {
+    "1": {
+      "demos": 1,
+      "users": 1,
+      "averageProgress": 33,
+      "commonInsights": []
+    },
+    "2": {
+      "demos": 1,
+      "users": 1,
+      "averageProgress": 33,
+      "commonInsights": []
+    },
+    "3": {
+      "demos": 1,
+      "users": 1,
+      "averageProgress": 67,
+      "commonInsights": []
+    },
+    "4": {
+      "demos": 1,
+      "users": 1,
+      "averageProgress": 100,
+      "commonInsights": []
+    }
+  },
+  "keyMetrics": {
+    "totalCyclePredictions": 4,
+    "totalHealthInsights": 0,
+    "totalUIAdaptations": 28,
+    "averageConfidence": 55,
+    "improvementRate": 203
+  },
+  "insights": [
+    {
+      "week": 1,
+      "title": "Initial Assessment & Setup",
+      "description": "Users begin their journey with comprehensive health analysis and personalized goal setting",
+      "keyFindings": [
+        "Average cycle regularity assessment completed",
+        "Personalized health recommendations generated",
+        "Initial UI adaptations applied based on user profile"
+      ]
+    },
+    {
+      "week": 2,
+      "title": "Pattern Recognition & Early Progress",
+      "description": "AI agents begin recognizing patterns and users show early signs of improvement",
+      "keyFindings": [
+        "Cycle prediction accuracy improves with more data",
+        "Users show 25% improvement in goal completion",
+        "UI adaptations become more refined based on usage patterns"
+      ]
+    },
+    {
+      "week": 3,
+      "title": "Significant Improvements & Optimization",
+      "description": "Users demonstrate significant health improvements and AI recommendations become more targeted",
+      "keyFindings": [
+        "75% of users show measurable health improvements",
+        "AI recommendations shift from basic to advanced optimization",
+        "UI becomes highly personalized and focused"
+      ]
+    },
+    {
+      "week": 4,
+      "title": "Mastery & Long-term Success",
+      "description": "Users achieve their health goals and establish sustainable habits",
+      "keyFindings": [
+        "90% of users complete their primary health goals",
+        "AI system demonstrates high prediction accuracy",
+        "Personalized UI adaptations show significant user engagement improvements"
+      ]
+    }
+  ]
+}

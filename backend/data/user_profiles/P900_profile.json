@@ -1,0 +1,215 @@
+{
+  "userId": "P900",
+  "profile": {
+    "userId": "P900",
+    "age": 28,
+    "conditions": {
+      "pcos": false,
+      "endometriosis": false,
+      "irregularPeriods": false,
+      "weightGain": false,
+      "insulinResistance": false,
+      "ovarianCysts": false,
+      "hairThinning": false,
+      "heavyBleeding": false,
+      "infertility": false,
+      "giIssues": false
+    },
+    "preferences": {
+      "journalingMode": "audio",
+      "goalFocus": "performance",
+      "coachingStyle": "motivational"
+    },
+    "cyclePattern": {
+      "averageCycleLength": 28,
+      "averageFlowDuration": 5,
+      "regularity": "very_regular",
+      "phases": {
+        "menstrual": {
+          "count": 5,
+          "averageSymptoms": {}
+        },
+        "follicular": {
+          "count": 8,
+          "averageSymptoms": {}
+        },
+        "ovulatory": {
+          "count": 2,
+          "averageSymptoms": {}
+        },
+        "luteal": {
+          "count": 5,
+          "averageSymptoms": {}
+        }
+      }
+    },
+    "healthMetrics": {
+      "hrv": {
+        "average": 66,
+        "trend": "stable",
+        "optimalRange": [
+          60,
+          100
+        ]
+      },
+      "sleep": {
+        "averageHours": 7.4,
+        "deepSleepPercentage": 35,
+        "quality": "good"
+      },
+      "bbt": {
+        "average": 36.6,
+        "follicular": 0,
+        "luteal": 0
+      },
+      "activity": {
+        "averageSteps": 13565,
+        "averageActiveMinutes": 103
+      },
+      "symptoms": {
+        "cramps": {
+          "average": 0.8,
+          "severity": "none"
+        },
+        "bodyPain": {
+          "average": 1,
+          "severity": "none"
+        },
+        "backPain": {
+          "average": 0.8,
+          "severity": "none"
+        },
+        "mood": {
+          "average": 4.4,
+          "trend": "stable"
+        }
+      }
+    },
+    "lifestyleFactors": {
+      "caffeine": {
+        "average": 1.2,
+        "impact": "moderate"
+      },
+      "stress": {
+        "averageBusyScore": 4,
+        "meetingsPerDay": 2.3,
+        "stressLevel": "moderate"
+      },
+      "environment": {
+        "averageLightMinutes": 79,
+        "sunnyDays": 13,
+        "averageUVIndex": 6.2,
+        "averageTemperature": 22.2,
+        "averageAQI": 61,
+        "averagePollenCount": 39
+      },
+      "travel": {
+        "flightDays": 0,
+        "averageJetLag": 0
+      }
+    }
+  },
+  "cyclePredictions": [
+    {
+      "startDate": "2025-07-18",
+      "endDate": "2025-08-14",
+      "length": 28,
+      "phases": [
+        {
+          "name": "menstrual",
+          "startDate": "2025-07-18",
+          "endDate": "2025-07-22",
+          "duration": 5
+        },
+        {
+          "name": "follicular",
+          "startDate": "2025-07-23",
+          "endDate": "2025-08-04",
+          "duration": 13
+        },
+        {
+          "name": "ovulatory",
+          "startDate": "2025-08-05",
+          "endDate": "2025-08-07",
+          "duration": 3
+        },
+        {
+          "name": "luteal",
+          "startDate": "2025-08-08",
+          "endDate": "2025-08-14",
+          "duration": 7
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "startDate": "2025-08-15",
+      "endDate": "2025-09-11",
+      "length": 28,
+      "phases": [
+        {
+          "name": "menstrual",
+          "startDate": "2025-08-15",
+          "endDate": "2025-08-19",
+          "duration": 5
+        },
+        {
+          "name": "follicular",
+          "startDate": "2025-08-20",
+          "endDate": "2025-09-01",
+          "duration": 13
+        },
+        {
+          "name": "ovulatory",
+          "startDate": "2025-09-02",
+          "endDate": "2025-09-04",
+          "duration": 3
+        },
+        {
+          "name": "luteal",
+          "startDate": "2025-09-05",
+          "endDate": "2025-09-11",
+          "duration": 7
+        }
+      ],
+      "confidence": 0.95
+    }
+  ],
+  "healthInsights": {
+    "userId": "P900",
+    "timestamp": "2025-08-10T00:10:08.833Z",
+    "cycleInsights": [],
+    "healthInsights": [],
+    "lifestyleInsights": [],
+    "riskFactors": [],
+    "goals": [
+      {
+        "category": "sleep",
+        "title": "Improve Sleep Duration",
+        "target": "8 hours per night",
+        "current": "7.4 hours",
+        "timeframe": "30 days",
+        "actionable": true
+      }
+    ],
+    "notifications": [
+      {
+        "type": "cycle_tracking",
+        "title": "Track Your Cycle",
+        "message": "Log your symptoms and observations for better predictions",
+        "frequency": "daily",
+        "time": "20:00",
+        "enabled": true
+      },
+      {
+        "type": "health_checkin",
+        "title": "Health Check-in",
+        "message": "How are you feeling today?",
+        "frequency": "daily",
+        "time": "09:00",
+        "enabled": true
+      }
+    ]
+  },
+  "timestamp": "2025-08-10T00:10:08.833Z"
+}
